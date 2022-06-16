@@ -24,7 +24,7 @@ func NewProof(b *Block) *ProofOfWork {
 	return pow
 }
 func (pow *ProofOfWork) InitData(nonce int) []byte {
-	data := bytes.Join([][]byte{pow.Block.Data, pow.Block.PrevHash, ToHex(int64(nonce)), ToHex(int64(Difficulty))}, []byte{})
+	data := bytes.Join([][]byte{pow.Block.HashTransactions(), pow.Block.PrevHash, ToHex(int64(nonce)), ToHex(int64(Difficulty))}, []byte{})
 	return data
 }
 func (pow *ProofOfWork) Run() (int, []byte) {
