@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/pratyushbh/blockchain_go"
+	blockchain "github.com/pratyushbh/blockchain_go/Blockchain"
 )
 
 type CommandLine struct{}
@@ -27,14 +27,14 @@ func (cli *CommandLine) validateArgs() {
 	}
 }
 func (cli *CommandLine) PrintBlockchain() {
-	chain := blockchain_go.ContinueBlockChain("")
+	chain := blockchain.ContinueBlockChain("")
 	defer chain.Database.Close()
 	iter := chain.Iterator()
 	for {
 		block := iter.Next()
 		fmt.Printf("\nPrevious Hash:%x\n \n", block.PrevHash)
 		fmt.Printf("Hash:%x\n\n-\n", block.Hash)
-		pow := blockchain_go.NewProof(block)
+		pow := blockchain.NewProof(block)
 		fmt.Printf("PoW:%s\n", strconv.FormatBool(pow.Validate()))
 		fmt.Println()
 		if len(block.PrevHash) == 0 {
@@ -43,7 +43,7 @@ func (cli *CommandLine) PrintBlockchain() {
 	}
 }
 func (cli *CommandLine) getbalance(address string) {
-	chain := blockchain_go.ContinueBlockChain(address)
+	chain := blockchain.ContinueBlockChain(address)
 	defer chain.Database.Close()
 	balance := 0
 	UTXOs := chain.FindUTXO(address)
@@ -53,18 +53,18 @@ func (cli *CommandLine) getbalance(address string) {
 	fmt.Printf("Balance of %s:%d\n", address, balance)
 }
 func (cli *CommandLine) createBlockChain(address string) {
-	chain := blockchain_go.InitBlockChain(address)
+	chain := blockchain.InitBlockChain(address)
 	chain.Database.Close()
 	fmt.Println("Finished!")
 }
 func (cli *CommandLine) send(from, to string, amount int) {
-	chain := blockchain_go.ContinueBlockChain(from)
+	chain := blockchain.ContinueBlockChain(from)
 	defer chain.Database.Close()
-	tx := blockchain_go.NewTransaction(from, to, amount, chain)
-	chain.Addblock([]*blockchain_go.Transaction{tx})
+	tx := blockchain.NewTransaction(from, to, amount, chain)
+	chain.Addblock([]*blockchain.Transaction{tx})
 	fmt.Println("Success!")
 }
-func (cli *CommandLine) run() {
+func (cli *CommandLine) Run() {
 	cli.validateArgs()
 
 	getBalanceCmd := flag.NewFlagSet("getbalance", flag.ExitOnError)

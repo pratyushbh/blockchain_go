@@ -1,4 +1,4 @@
-module github.com/tensor-programming/golang-blockchain
+module github.com/pratyushbh/blockchain_go
 
 go 1.18
 
