@@ -5,9 +5,10 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/sha256"
-	"encoding/base58"
 	"fmt"
 	"log"
+
+	"github.com/mr-tron/base58"
 
 	"golang.org/x/crypto/ripemd160"
 )
